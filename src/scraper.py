@@ -5,7 +5,6 @@ import random
 import re
 import time
 
-
 import requests
 from requests.exceptions import HTTPError, Timeout
 
@@ -72,13 +71,8 @@ class ProductScraper:
                 else:
                     return None
 
-    # def clean_text(self, text):
-    #     return " ".join(
-    #         text.replace("<br>", " ").replace("\n", " ").replace("<p>", " ").split()
-    #     )
     def clean_text(self, text):
-        # Убираем все HTML-теги с помощью регулярного выражения и очищаем лишние пробелы
-        text = re.sub(r"<.*?>", " ", text)  # Убираем все теги HTML
+        text = re.sub(r"<.*?>", " ", text)  # Убираем HTML-теги
         return " ".join(text.split())  # Убираем лишние пробелы
 
     def extract_text(self, descriptions, index):
@@ -92,12 +86,11 @@ class ProductScraper:
             return descriptions[3].get("subtitle", "Не указана")
         return "Не указана"
 
-    def parse_products(self, max_items=60):
+    def parse_products(self):
         products = []
         page_number = 1
-        item_count = 0
 
-        while item_count < max_items:
+        while True:
             data = self.fetch_data(page_number)
             if not data:
                 break
@@ -107,8 +100,6 @@ class ProductScraper:
                 break
 
             for item in product_list:
-                if item_count >= max_items:
-                    break
                 try:
                     link = f"{self.base_url}{item['url']}"
                     name = item.get("name", "Нет названия")
@@ -142,7 +133,6 @@ class ProductScraper:
                             "country": details["country"] if details else "Не указана",
                         }
                     )
-                    item_count += 1
                 except KeyError:
                     pass
             page_number += 1
@@ -161,7 +151,7 @@ if __name__ == "__main__":
     api_url = "https://goldapple.ru/front/api/catalog/products?categoryId=1000003783&cityId=0c5b2444-70a0-4932-980c-b4dc0d3f02b5&z=14-46"
 
     scraper = ProductScraper(base_url, api_url)
-    products = scraper.parse_products(max_items=30)  # Ограничиваем до 60 товаров
+    products = scraper.parse_products()  # Сбор всех товаров без ограничения
     print(f"Найдено товаров: {len(products)}")
 
     if products:
