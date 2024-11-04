@@ -114,12 +114,6 @@ class ProductScraper:
                     rating = reviews_data.get("rating", "Нет рейтинга")
                     review_count = reviews_data.get("reviewsCount", "Нет отзывов")
 
-                    image_url = (
-                        item["imageUrls"][0]["url"]
-                        .replace("${screen}", "fullhd")
-                        .replace("${format}", "jpg")
-                    )
-
                     details = self.fetch_product_details(item["itemId"])
 
                     products.append(
@@ -131,7 +125,6 @@ class ProductScraper:
                             "actual_price": actual_price,
                             "rating": rating,
                             "review_count": review_count,
-                            "image_url": image_url,
                             "description": (
                                 details["description"] if details else "Нет описания"
                             ),
@@ -162,7 +155,7 @@ if __name__ == "__main__":
     api_url = "https://goldapple.ru/front/api/catalog/products?categoryId=1000003783&cityId=0c5b2444-70a0-4932-980c-b4dc0d3f02b5&z=14-46"
 
     scraper = ProductScraper(base_url, api_url)
-    products = scraper.parse_products(max_items=60)  # Ограничиваем до 60 товаров
+    products = scraper.parse_products(max_items=30)  # Ограничиваем до 60 товаров
     print(f"Найдено товаров: {len(products)}")
 
     if products:
