@@ -2,7 +2,9 @@ import csv
 import json
 import os
 import random
+import re
 import time
+
 
 import requests
 from requests.exceptions import HTTPError, Timeout
@@ -70,10 +72,14 @@ class ProductScraper:
                 else:
                     return None
 
+    # def clean_text(self, text):
+    #     return " ".join(
+    #         text.replace("<br>", " ").replace("\n", " ").replace("<p>", " ").split()
+    #     )
     def clean_text(self, text):
-        return " ".join(
-            text.replace("<br>", " ").replace("\n", " ").replace("<p>", " ").split()
-        )
+        # Убираем все HTML-теги с помощью регулярного выражения и очищаем лишние пробелы
+        text = re.sub(r'<.*?>', ' ', text)  # Убираем все теги HTML
+        return " ".join(text.split())  # Убираем лишние пробелы
 
     def extract_text(self, descriptions, index):
         if len(descriptions) > index:
