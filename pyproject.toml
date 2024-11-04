@@ -10,6 +10,7 @@ python = "^3.12"
 requests = "^2.32.3"
 beautifulsoup4 = "^4.12.3"
 selenium = "^4.26.1"
+black = "^24.10.0"
 
 
 [tool.poetry.group.dev.dependencies]
