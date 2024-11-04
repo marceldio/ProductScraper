@@ -78,7 +78,7 @@ class ProductScraper:
     #     )
     def clean_text(self, text):
         # Убираем все HTML-теги с помощью регулярного выражения и очищаем лишние пробелы
-        text = re.sub(r'<.*?>', ' ', text)  # Убираем все теги HTML
+        text = re.sub(r"<.*?>", " ", text)  # Убираем все теги HTML
         return " ".join(text.split())  # Убираем лишние пробелы
 
     def extract_text(self, descriptions, index):

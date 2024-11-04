@@ -2,13 +2,14 @@ import unittest
 from unittest.mock import patch
 from src.scraper import ProductScraper
 
+
 class TestProductScraper(unittest.TestCase):
     def setUp(self):
         self.scraper = ProductScraper(
             base_url="https://example.com",
             api_url="https://example.com/api",
             timeout=5,
-            max_retries=3
+            max_retries=3,
         )
 
     def test_clean_text(self):
@@ -21,7 +22,9 @@ class TestProductScraper(unittest.TestCase):
     def test_fetch_data(self, mock_get):
         # Имитация успешного ответа для fetch_data
         mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {"data": {"products": [{"id": 1}, {"id": 2}]}}
+        mock_get.return_value.json.return_value = {
+            "data": {"products": [{"id": 1}, {"id": 2}]}
+        }
 
         data = self.scraper.fetch_data(page_number=1)
         self.assertIsNotNone(data)
@@ -37,7 +40,7 @@ class TestProductScraper(unittest.TestCase):
                     {"content": "Описание продукта"},
                     {"content": "Инструкция по применению"},
                     {},
-                    {"subtitle": "Россия"}
+                    {"subtitle": "Россия"},
                 ]
             }
         }
@@ -60,20 +63,23 @@ class TestProductScraper(unittest.TestCase):
                             "url": "/product/1",
                             "name": "Товар 1",
                             "brand": "Бренд 1",
-                            "price": {"regular": {"amount": 1000}, "actual": {"amount": 800}},
+                            "price": {
+                                "regular": {"amount": 1000},
+                                "actual": {"amount": 800},
+                            },
                             "reviews": {"rating": 4.5, "reviewsCount": 10},
                             "imageUrls": [{"url": "image1.jpg"}],
-                            "itemId": "12345"
+                            "itemId": "12345",
                         }
                     ]
                 }
             },
-            None  # Остановка после первой страницы
+            None,  # Остановка после первой страницы
         ]
         mock_fetch_product_details.return_value = {
             "description": "Описание продукта",
             "usage_instructions": "Инструкция по применению",
-            "country": "Россия"
+            "country": "Россия",
         }
 
         products = self.scraper.parse_products(max_items=1)
@@ -87,6 +93,7 @@ class TestProductScraper(unittest.TestCase):
         self.assertEqual(products[0]["description"], "Описание продукта")
         self.assertEqual(products[0]["usage_instructions"], "Инструкция по применению")
         self.assertEqual(products[0]["country"], "Россия")
+
 
 if __name__ == "__main__":
     unittest.main()
