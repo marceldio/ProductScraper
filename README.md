@@ -1,5 +1,5 @@
 Web scraping of product information by Marcel Dio
-# product_scraper
+# Product Scraper
 Веб скрапинг информации о товарах.
 
 Описание:
