@@ -82,7 +82,7 @@ class TestProductScraper(unittest.TestCase):
             "country": "Россия",
         }
 
-        products = self.scraper.parse_products(max_items=1)
+        products = self.scraper.parse_products()
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0]["name"], "Товар 1")
         self.assertEqual(products[0]["brand"], "Бренд 1")

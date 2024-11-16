@@ -1,10 +1,8 @@
 import csv
-import json
 import os
 import random
 import re
 import time
-
 import requests
 from requests.exceptions import HTTPError, Timeout
 
